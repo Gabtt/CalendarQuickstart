@@ -124,13 +124,7 @@ public class Quickstart {
         }
     }
 
-    /**
-     * Display an error dialog showing that Google Play Services is missing
-     * or out of date.
-     *
-     * @param connectionStatusCode code describing the presence (or lack of)
-     *                             Google Play Services on this device.
-     */
+
     void showGooglePlayServicesAvailabilityErrorDialog(final int connectionStatusCode) {
         GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
         Dialog dialog = apiAvailability.getErrorDialog(
@@ -147,6 +141,9 @@ public class Quickstart {
     }
     public interface OnEventCreated{
         void onCreated(String eventId);
+    }
+    public interface OnGetEvent{
+        void onGet(Event event);
     }
     public interface OnCalendarCreated{
         void onCreated(String calendarId);
