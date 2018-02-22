@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.monolit.calendarquickstart.calendar_connections.EventCalendarCreate;
 import com.example.monolit.calendarquickstart.calendar_connections.EventCreate;
+import com.example.monolit.calendarquickstart.calendar_connections.EventUpdate;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.api.client.extensions.android.http.AndroidHttp;
@@ -59,6 +60,12 @@ public class Quickstart {
     void createEvent(Event event, String calendarId,Quickstart.OnEventCreated listener){
         if(canGetResultsFromApi()){
             new EventCreate(mCredential, calendarId, event, listener).execute();
+        }
+    }
+
+    void updateEvent(Event event, String eventId ,String calendarId ,Quickstart.OnEventUpdated listener){
+        if(canGetResultsFromApi()){
+            new EventUpdate(mCredential, calendarId,eventId, event, listener).execute();
         }
     }
 
@@ -137,10 +144,10 @@ public class Quickstart {
 
 
     public interface OnEventUpdated{
-        void onUpdated(String eventId);
+        void onUpdated(Event event);
     }
     public interface OnEventCreated{
-        void onCreated(String eventId);
+        void onCreated(Event event );
     }
     public interface OnGetEvent{
         void onGet(Event event);

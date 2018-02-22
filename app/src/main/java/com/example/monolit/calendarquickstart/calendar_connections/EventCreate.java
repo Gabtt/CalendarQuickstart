@@ -19,7 +19,7 @@ import java.io.IOException;
  */
 
 
-public class EventCreate extends AsyncTask<Void, Void, String> {
+public class EventCreate extends AsyncTask<Void, Void, Event> {
     private com.google.api.services.calendar.Calendar mService = null;
     private Exception mLastError = null;
     private OnEventCreated listener;
@@ -42,7 +42,7 @@ public class EventCreate extends AsyncTask<Void, Void, String> {
     }
 
     @Override
-    protected String doInBackground(Void... params) {
+    protected Event doInBackground(Void... params) {
         try {
             return callCreateEvent();
         } catch (Exception e) {
@@ -52,7 +52,7 @@ public class EventCreate extends AsyncTask<Void, Void, String> {
         }
     }
 
-    String callCreateEvent() throws IOException {
+    Event callCreateEvent() throws IOException {
         //DateTime startDateTime = new DateTime("2015-05-28T09:00:00-07:00");
         //EventDateTime start = new EventDateTime()
         //        .setDateTime(startDateTime)
@@ -82,7 +82,7 @@ public class EventCreate extends AsyncTask<Void, Void, String> {
         //event.setReminders(reminders);
 
         event = mService.events().insert(calendarId, event).execute();
-        return event.getId();
+        return event;
 
     }
 
@@ -94,7 +94,7 @@ public class EventCreate extends AsyncTask<Void, Void, String> {
     }
 
     @Override
-    protected void onPostExecute(String output) {
+    protected void onPostExecute(Event output) {
         listener.onCreated(output);
 
     }

@@ -105,7 +105,7 @@ public class MainActivity extends Activity
             @Override
             public void onClick(View v) {
 
-                Event event = new Event()
+                final Event event = new Event()
                         .setSummary("Google I/O 2015")
                         .setLocation("800 Howard St., San Francisco, CA 94103")
                         .setDescription("A chance to hear more about Google's developer products.");
@@ -127,8 +127,20 @@ public class MainActivity extends Activity
 
                     quickstart.createEvent(event,"primary",new Quickstart.OnEventCreated() {
                         @Override
-                        public void onCreated(String eventId) {
-                            Toast.makeText(MainActivity.this, eventId,Toast.LENGTH_LONG).show();
+                        public void onCreated(Event event) {
+
+                            event.setSummary("ETA NOVINHA TU TA REBOLANDO BEM");
+                            event.setDescription("Ai MEU PIRUUUUU");
+
+                            quickstart.updateEvent(event, event.getId(), "primary", new Quickstart.OnEventUpdated() {
+                                @Override
+                                public void onUpdated(Event event) {
+                                    Toast.makeText(MainActivity.this, "DEUBOM",Toast.LENGTH_LONG).show();
+
+                                }
+                            });
+
+
                         }
                     });
 

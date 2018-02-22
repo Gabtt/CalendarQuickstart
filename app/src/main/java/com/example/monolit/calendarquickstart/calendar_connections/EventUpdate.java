@@ -19,7 +19,7 @@ import java.io.IOException;
  * Created by gabriel_batistell on 22/02/18.
  */
 
-public class EventUpdate extends AsyncTask<Void, Void, String> {
+public class EventUpdate extends AsyncTask<Void, Void, Event> {
     private com.google.api.services.calendar.Calendar mService = null;
     private Exception mLastError = null;
     private OnEventUpdated listener;
@@ -44,7 +44,7 @@ public class EventUpdate extends AsyncTask<Void, Void, String> {
     }
 
     @Override
-    protected String doInBackground(Void... params) {
+    protected Event doInBackground(Void... params) {
         try {
             return callUpdateEvent();
         } catch (Exception e) {
@@ -54,10 +54,10 @@ public class EventUpdate extends AsyncTask<Void, Void, String> {
         }
     }
 
-    String callUpdateEvent() throws IOException {
+    Event callUpdateEvent() throws IOException {
 
         Event updatedEvent = mService.events().update(calendarId, eventId, event).execute();
-        return updatedEvent.getId();
+        return updatedEvent;
 
     }
 
@@ -67,7 +67,7 @@ public class EventUpdate extends AsyncTask<Void, Void, String> {
     }
 
     @Override
-    protected void onPostExecute(String output) {
+    protected void onPostExecute(Event output) {
         listener.onUpdated(output);
 
     }
