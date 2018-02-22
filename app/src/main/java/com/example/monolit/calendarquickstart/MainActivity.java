@@ -1,25 +1,20 @@
 package com.example.monolit.calendarquickstart;
 
-import com.google.android.gms.auth.api.credentials.CredentialsClient;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 
+import com.google.api.client.util.DateTime;
 import com.google.api.client.util.ExponentialBackOff;
 
 import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.calendar.model.Event;
+import com.google.api.services.calendar.model.EventDateTime;
 
-import android.Manifest;
 import android.accounts.AccountManager;
 import android.app.Activity;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.method.ScrollingMovementMethod;
@@ -28,12 +23,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
 public class MainActivity extends Activity
@@ -92,6 +86,13 @@ public class MainActivity extends Activity
 
         mCallApiButton = new Button(this);
         mCallApiButton.setText(BUTTON_TEXT);
+        btCallApiNewEvent = new Button(this);
+        btCallApiNewEvent.setText("New Event");
+        btCallApiNewCalendar = new Button(this);
+        btCallApiNewCalendar.setText("New Calendar");
+
+
+
         mCallApiButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,34 +101,62 @@ public class MainActivity extends Activity
                 mCallApiButton.setEnabled(true);
             }
         });
-        activityLayout.addView(mCallApiButton);
-
-
-        btCallApiNewEvent = new Button(this);
-        btCallApiNewEvent.setText("New Event");
         btCallApiNewEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    quickstart.getResultsFromApi("create_event");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+
+                Event event = new Event()
+                        .setSummary("Google I/O 2015")
+                        .setLocation("800 Howard St., San Francisco, CA 94103")
+                        .setDescription("A chance to hear more about Google's developer products.");
+
+                DateTime startDateTime = new DateTime("2015-05-28T09:00:00-07:00");
+                EventDateTime start = new EventDateTime()
+                        .setDateTime(startDateTime)
+                        .setTimeZone("America/Los_Angeles");
+                event.setStart(start);
+
+                DateTime endDateTime = new DateTime("2015-05-28T17:00:00-07:00");
+                EventDateTime end = new EventDateTime()
+                        .setDateTime(endDateTime)
+                        .setTimeZone("America/Los_Angeles");
+                event.setEnd(end);
+
+                String[] recurrence = new String[]{"RRULE:FREQ=DAILY;COUNT=2"};
+                event.setRecurrence(Arrays.asList(recurrence));
+
+                    quickstart.createEvent(event,"primary",new Quickstart.OnEventCreated() {
+                        @Override
+                        public void onCreated(String eventId) {
+                            Toast.makeText(MainActivity.this, eventId,Toast.LENGTH_LONG).show();
+                        }
+                    });
+
             }
         });
-        activityLayout.addView(btCallApiNewEvent);
-
-        btCallApiNewCalendar = new Button(this);
-        btCallApiNewCalendar.setText("New Calendar");
         btCallApiNewCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 btCallApiNewCalendar.setEnabled(false);
+                com.google.api.services.calendar.model.Calendar calendar = new com.google.api.services.calendar.model.Calendar();
+                calendar.setSummary("calendarSummary");
+                calendar.setTimeZone("America/Los_Angeles");
+
+                quickstart.createCalendar(calendar,new Quickstart.OnCalendarCreated() {
+                    @Override
+                    public void onCreated(String calendarId) {
+                        Toast.makeText(MainActivity.this,calendarId,Toast.LENGTH_LONG).show();
+                    }
+                });
                 mOutputText.setText("");
                 btCallApiNewCalendar.setEnabled(true);
             }
         });
+
+        activityLayout.addView(btCallApiNewEvent);
+        activityLayout.addView(mCallApiButton);
         activityLayout.addView(btCallApiNewCalendar);
+
 
         mOutputText = new TextView(this);
         mOutputText.setLayoutParams(tlp);
