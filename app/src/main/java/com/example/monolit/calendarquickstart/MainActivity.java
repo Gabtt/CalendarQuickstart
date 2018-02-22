@@ -110,13 +110,13 @@ public class MainActivity extends Activity
                         .setLocation("800 Howard St., San Francisco, CA 94103")
                         .setDescription("A chance to hear more about Google's developer products.");
 
-                DateTime startDateTime = new DateTime("2015-05-28T09:00:00-07:00");
+                DateTime startDateTime = new DateTime("2018-02-22T09:00:00-07:00");
                 EventDateTime start = new EventDateTime()
                         .setDateTime(startDateTime)
                         .setTimeZone("America/Los_Angeles");
                 event.setStart(start);
 
-                DateTime endDateTime = new DateTime("2015-05-28T17:00:00-07:00");
+                DateTime endDateTime = new DateTime("2018-02-22T17:00:00-07:00");
                 EventDateTime end = new EventDateTime()
                         .setDateTime(endDateTime)
                         .setTimeZone("America/Los_Angeles");
@@ -135,7 +135,7 @@ public class MainActivity extends Activity
                             quickstart.updateEvent(event, event.getId(), "primary", new Quickstart.OnEventUpdated() {
                                 @Override
                                 public void onUpdated(Event event) {
-                                    Toast.makeText(MainActivity.this, "DEUBOM",Toast.LENGTH_LONG).show();
+                                    Toast.makeText(MainActivity.this, "DEUBOM"+event.getId(),Toast.LENGTH_LONG).show();
 
                                 }
                             });
