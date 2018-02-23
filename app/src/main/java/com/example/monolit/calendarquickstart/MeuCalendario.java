@@ -27,6 +27,7 @@ import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
 public class MeuCalendario {
+    // TODO: 23/02/18 Lembrar de adicionar credenciais na Main, no login ou sei lá.
     Activity context;
     GoogleAccountCredential mCredential;
     private static final String APPLICATION_NAME = "Google Calendar API Java Quickstart";
@@ -115,8 +116,8 @@ public class MeuCalendario {
 
     @AfterPermissionGranted(REQUEST_PERMISSION_GET_ACCOUNTS)
     private void chooseAccount() {
-        if (EasyPermissions.hasPermissions(
-                context, Manifest.permission.GET_ACCOUNTS)) {
+        if (EasyPermissions.hasPermissions(context, Manifest.permission.GET_ACCOUNTS)) {
+
             String accountName = ((Activity) context).getPreferences(Context.MODE_PRIVATE)
                     .getString(PREF_ACCOUNT_NAME, null);
             if (accountName != null) {
