@@ -2,19 +2,15 @@ package com.example.monolit.calendarquickstart.calendar_connections;
 
 import android.os.AsyncTask;
 
-import com.example.monolit.calendarquickstart.Quickstart;
-import com.example.monolit.calendarquickstart.Quickstart.OnCalendarCreated;
+import com.example.monolit.calendarquickstart.MeuCalendario.OnCalendarCreated;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.services.calendar.Calendar;
 
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by gabriel_batistell on 22/02/18.

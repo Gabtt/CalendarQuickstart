@@ -2,9 +2,8 @@ package com.example.monolit.calendarquickstart.calendar_connections;
 
 import android.os.AsyncTask;
 
-import com.example.monolit.calendarquickstart.Quickstart;
-import com.example.monolit.calendarquickstart.Quickstart.OnEventCreated;
-import com.example.monolit.calendarquickstart.Quickstart.OnEventUpdated;
+import com.example.monolit.calendarquickstart.MeuCalendario;
+import com.example.monolit.calendarquickstart.MeuCalendario.OnEventUpdated;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.http.HttpTransport;
@@ -25,6 +24,7 @@ public class EventUpdate extends AsyncTask<Void, Void, Event> {
     private OnEventUpdated listener;
     String eventId;
     String calendarId;
+    Event eventToUpdate;
 
     private Event event;
     private GoogleAccountCredential credential;
@@ -56,6 +56,8 @@ public class EventUpdate extends AsyncTask<Void, Void, Event> {
 
     Event callUpdateEvent() throws IOException {
 
+        eventToUpdate = mService.events().get(calendarId, eventId).execute();
+
         Event updatedEvent = mService.events().update(calendarId, eventId, event).execute();
         return updatedEvent;
 
@@ -69,6 +71,7 @@ public class EventUpdate extends AsyncTask<Void, Void, Event> {
     @Override
     protected void onPostExecute(Event output) {
         listener.onUpdated(output);
+        MeuCalendario.updateEvent(eventToUpdate, output);
 
     }
 

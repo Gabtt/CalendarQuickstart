@@ -9,32 +9,26 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.util.EventLog;
-import android.widget.Toast;
 
 import com.example.monolit.calendarquickstart.calendar_connections.EventCalendarCreate;
 import com.example.monolit.calendarquickstart.calendar_connections.EventCreate;
+import com.example.monolit.calendarquickstart.calendar_connections.EventGet;
 import com.example.monolit.calendarquickstart.calendar_connections.EventUpdate;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
-import com.google.api.client.http.HttpTransport;
-import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.client.json.JsonFactory;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.Calendar;
 
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
-public class Quickstart {
+public class MeuCalendario {
     Activity context;
     GoogleAccountCredential mCredential;
-
-
     private static final String APPLICATION_NAME = "Google Calendar API Java Quickstart";
     private static final String PREF_ACCOUNT_NAME = "accountName";
 
@@ -42,7 +36,9 @@ public class Quickstart {
     static final int REQUEST_PERMISSION_GET_ACCOUNTS = 1003;
     static final int REQUEST_ACCOUNT_PICKER = 1000;
 
-    public Quickstart(Activity context, GoogleAccountCredential credential) {
+    private static List<Event> eventList = new ArrayList<>();
+    
+    public MeuCalendario(Activity context, GoogleAccountCredential credential) {
         this.mCredential = credential;
         this.context = context;
     }
@@ -57,20 +53,33 @@ public class Quickstart {
         }
     }
 
-    void createEvent(Event event, String calendarId,Quickstart.OnEventCreated listener){
+    void createEvent(Event event, String calendarId, final MeuCalendario.OnEventCreated listener){
         if(canGetResultsFromApi()){
-            new EventCreate(mCredential, calendarId, event, listener).execute();
+           
+            new EventCreate(mCredential, calendarId, event,  new OnEventCreated() {
+                @Override
+                public void onCreated(Event event) {
+                    saveEvent(event);
+                    listener.onCreated(event);
+
+                }
+            }).execute();
         }
     }
 
-    void updateEvent(Event event, String eventId ,String calendarId ,Quickstart.OnEventUpdated listener){
+    void updateEvent(Event eventUpdated, String eventId , String calendarId , final MeuCalendario.OnEventUpdated listener){
         if(canGetResultsFromApi()){
-            new EventUpdate(mCredential, calendarId,eventId, event, listener).execute();
+            
+            new EventUpdate(mCredential, calendarId, eventId, eventUpdated, new OnEventUpdated() {
+                @Override
+                public void onUpdated(Event event) {
+                    listener.onUpdated(event);
+                }
+            }).execute();
         }
     }
 
-
-    void createCalendar(Calendar calendar, Quickstart.OnCalendarCreated listener){
+    void createCalendar(Calendar calendar, MeuCalendario.OnCalendarCreated listener){
         if(canGetResultsFromApi()){
             new EventCalendarCreate(mCredential, calendar, listener).execute();
         }
@@ -83,8 +92,7 @@ public class Quickstart {
                 apiAvailability.isGooglePlayServicesAvailable(context);
         return connectionStatusCode == ConnectionResult.SUCCESS;
     }
-
-    boolean canGetResultsFromApi() {
+    private boolean canGetResultsFromApi() {
         if (!isGooglePlayServicesAvailable()) {
             acquireGooglePlayServices();
             return false;
@@ -96,17 +104,15 @@ public class Quickstart {
         }
     }
 
+    void showGooglePlayServicesAvailabilityErrorDialog(final int connectionStatusCode) {
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        Dialog dialog = apiAvailability.getErrorDialog(
+                ((MainActivity) context),
+                connectionStatusCode,
+                REQUEST_GOOGLE_PLAY_SERVICES);
+        dialog.show();
+    }
 
-    /**
-     * Attempts to set the account used with the API credentials. If an account
-     * name was previously saved it will use that one; otherwise an account
-     * picker dialog will be shown to the user. Note that the setting the
-     * account to use with the credentials object requires the app to have the
-     * GET_ACCOUNTS permission, which is requested here if it is not already
-     * present. The AfterPermissionGranted annotation indicates that this
-     * function will be rerun automatically whenever the GET_ACCOUNTS permission
-     * is granted.
-     */
     @AfterPermissionGranted(REQUEST_PERMISSION_GET_ACCOUNTS)
     private void chooseAccount() {
         if (EasyPermissions.hasPermissions(
@@ -131,16 +137,22 @@ public class Quickstart {
         }
     }
 
-
-    void showGooglePlayServicesAvailabilityErrorDialog(final int connectionStatusCode) {
-        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
-        Dialog dialog = apiAvailability.getErrorDialog(
-                ((MainActivity) context),
-                connectionStatusCode,
-                REQUEST_GOOGLE_PLAY_SERVICES);
-        dialog.show();
+    public void saveEvent(Event event){
+        eventList.add(event);
+    }
+    public void removeEvent(Event event){
+        eventList.remove(event);
+    }
+    public static void updateEvent(Event eventToUpdate, Event eventUpdated){
+        eventList.set(eventList.indexOf(eventToUpdate), eventUpdated);
     }
 
+    public static void setEventList(List<Event> eventList) {
+        MeuCalendario.eventList = eventList;
+    }
+    public static List<Event> getEventList() {
+        return eventList;
+    }
 
 
     public interface OnEventUpdated{

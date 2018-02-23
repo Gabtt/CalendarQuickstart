@@ -2,7 +2,7 @@ package com.example.monolit.calendarquickstart.calendar_connections;
 
 import android.os.AsyncTask;
 
-import com.example.monolit.calendarquickstart.Quickstart;
+import com.example.monolit.calendarquickstart.MeuCalendario;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.http.HttpTransport;
@@ -19,13 +19,13 @@ import java.io.IOException;
 public class EventGet extends AsyncTask<Void, Void, Event> {
     private com.google.api.services.calendar.Calendar mService = null;
     private Exception mLastError = null;
-    private Quickstart.OnGetEvent listener;
+    private MeuCalendario.OnGetEvent listener;
     String calendarId;
 
     private String eventId;
     private GoogleAccountCredential credential;
 
-    public EventGet (GoogleAccountCredential credential, String calendar_id, String eventId, Quickstart.OnGetEvent listener) {
+    public EventGet (GoogleAccountCredential credential, String calendar_id, String eventId, MeuCalendario.OnGetEvent listener) {
         this.listener = listener;
         this.eventId = eventId;
         this.credential = credential;

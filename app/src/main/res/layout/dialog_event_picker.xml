@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linearLayout1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+
+    <TimePicker
+        android:id="@+id/time_picker_start"
+        android:layout_width="257dp"
+        android:layout_height="294dp"></TimePicker>
+
+    <DatePicker
+        android:id="@+id/date_picker_start"
+        android:layout_width="335dp"
+        android:layout_height="281dp"></DatePicker>
+
+
+    <!--<TextView-->
+    <!--android:text="Data de inicio do Evento"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content" />-->
+    <!--<TextView-->
+    <!--android:text="Data de fim do Evento"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent" />-->
+
+    <!--<DatePicker-->
+    <!--android:id="@+id/date_picker_end"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content" >-->
+    <!--</DatePicker>-->
+    <!--<TimePicker-->
+    <!--android:id="@+id/time_picker_end"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content" >-->
+    <!--</TimePicker>-->
+
+
+
+    <!--<EditText-->
+    <!--android:id="@+id/title"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent" />-->
+
+    <!--<EditText-->
+    <!--android:id="@+id/description"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent" />-->
+
+</LinearLayout>
