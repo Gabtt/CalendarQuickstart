@@ -1,4 +1,4 @@
-package com.example.monolit.calendarquickstart.calendar_connections;
+package com.example.monolit.calendarquickstart.calendar.calendar_connections;
 
 import android.os.AsyncTask;
 
@@ -9,14 +9,10 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.model.Event;
-import com.google.api.services.calendar.model.EventAttendee;
-import com.google.api.services.calendar.model.EventDateTime;
-import com.google.api.services.calendar.model.EventReminder;
 import com.google.api.services.calendar.model.Events;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**

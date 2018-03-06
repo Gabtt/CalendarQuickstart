@@ -1,4 +1,4 @@
-package com.example.monolit.calendarquickstart;
+package com.example.monolit.calendarquickstart.calendar;
 
 /**
  * Created by gabriel_batistell on 22/02/18.
@@ -10,11 +10,11 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 
-import com.example.monolit.calendarquickstart.calendar_connections.EventCalendarCreate;
-import com.example.monolit.calendarquickstart.calendar_connections.EventCreate;
-import com.example.monolit.calendarquickstart.calendar_connections.EventDelete;
-import com.example.monolit.calendarquickstart.calendar_connections.EventGet;
-import com.example.monolit.calendarquickstart.calendar_connections.EventUpdate;
+import com.example.monolit.calendarquickstart.MainActivity;
+import com.example.monolit.calendarquickstart.calendar.calendar_connections.EventCalendarCreate;
+import com.example.monolit.calendarquickstart.calendar.calendar_connections.EventCreate;
+import com.example.monolit.calendarquickstart.calendar.calendar_connections.EventDelete;
+import com.example.monolit.calendarquickstart.calendar.calendar_connections.EventUpdate;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
@@ -55,7 +55,7 @@ public class MeuCalendario {
         }
     }
 
-    void createEvent(Event event, String calendarId, final MeuCalendario.OnEventCreated listener){
+    public void createEvent(Event event, String calendarId, final MeuCalendario.OnEventCreated listener){
         if(canGetResultsFromApi()){
            
             new EventCreate(mCredential, calendarId, event,  new OnEventCreated() {
@@ -88,7 +88,7 @@ public class MeuCalendario {
     }
 
 
-    void createCalendar(Calendar calendar, MeuCalendario.OnCalendarCreated listener){
+    public void createCalendar(Calendar calendar, MeuCalendario.OnCalendarCreated listener){
         if(canGetResultsFromApi()){
             new EventCalendarCreate(mCredential, calendar, listener).execute();
         }

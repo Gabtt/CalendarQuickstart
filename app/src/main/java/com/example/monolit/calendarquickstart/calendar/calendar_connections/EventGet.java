@@ -1,8 +1,8 @@
-package com.example.monolit.calendarquickstart.calendar_connections;
+package com.example.monolit.calendarquickstart.calendar.calendar_connections;
 
 import android.os.AsyncTask;
 
-import com.example.monolit.calendarquickstart.MeuCalendario;
+import com.example.monolit.calendarquickstart.calendar.MeuCalendario;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.http.HttpTransport;
@@ -16,15 +16,15 @@ import java.io.IOException;
  * Created by gabriel_batistell on 22/02/18.
  */
 
-public class EventDelete  extends AsyncTask<Void, Void, Void> {
+public class EventGet extends AsyncTask<Void, Void, Event> {
     private com.google.api.services.calendar.Calendar mService = null;
     private Exception mLastError = null;
-    private MeuCalendario.OnEventDeleted listener;
+    private MeuCalendario.OnGetEvent listener;
     String calendarId;
 
     private String eventId;
 
-    public EventDelete(GoogleAccountCredential credential,String calendar_id,String eventId, MeuCalendario.OnEventDeleted listener) {
+    public EventGet (GoogleAccountCredential credential, String calendar_id, String eventId, MeuCalendario.OnGetEvent listener) {
         this.listener = listener;
         this.eventId = eventId;
         this.calendarId = calendar_id;
@@ -37,9 +37,9 @@ public class EventDelete  extends AsyncTask<Void, Void, Void> {
     }
 
     @Override
-    protected Void doInBackground(Void... params) {
+    protected Event doInBackground(Void... params) {
         try {
-            return callDeleteEvent();
+            return callGetEvent();
         } catch (Exception e) {
             mLastError = e;
             cancel(true);
@@ -47,11 +47,12 @@ public class EventDelete  extends AsyncTask<Void, Void, Void> {
         }
     }
 
-    Void callDeleteEvent() throws IOException {
-         return mService.events().delete(calendarId, eventId).execute();
+
+    Event callGetEvent() throws IOException {
+        Event event = mService.events().get(calendarId, eventId).execute();
+        return event;
+
     }
-
-
 
 
     @Override
@@ -59,8 +60,8 @@ public class EventDelete  extends AsyncTask<Void, Void, Void> {
     }
 
     @Override
-    protected void onPostExecute(Void output) {
-        listener.onDeleted(output);
+    protected void onPostExecute(Event output) {
+        listener.onGet(output);
 
     }
 

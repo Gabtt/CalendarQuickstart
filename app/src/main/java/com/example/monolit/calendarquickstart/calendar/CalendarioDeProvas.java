@@ -1,4 +1,4 @@
-package com.example.monolit.calendarquickstart;
+package com.example.monolit.calendarquickstart.calendar;
 
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.model.Event;

@@ -1,4 +1,4 @@
-package com.example.monolit.calendarquickstart;
+package com.example.monolit.calendarquickstart.calendar;
 
 /**
  * Created by gabriel_batistell on 23/02/18.
