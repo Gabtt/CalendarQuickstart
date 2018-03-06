@@ -27,10 +27,8 @@ import java.util.List;
 class EventsGetLast extends AsyncTask<Void, Void, List<String>> {
     private com.google.api.services.calendar.Calendar mService = null;
     private Exception mLastError = null;
-    GoogleAccountCredential credential;
 
     EventsGetLast(GoogleAccountCredential credential) {
-        this.credential = credential;
         HttpTransport transport = AndroidHttp.newCompatibleTransport();
         JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
 

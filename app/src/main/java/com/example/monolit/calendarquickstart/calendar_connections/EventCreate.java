@@ -25,12 +25,10 @@ public class EventCreate extends AsyncTask<Void, Void, Event> {
     String calendarId;
 
     private Event event;
-    private GoogleAccountCredential credential;
 
     public EventCreate(GoogleAccountCredential credential,String calendar_id,Event event, OnEventCreated listener) {
         this.listener = listener;
         this.event = event;
-        this.credential = credential;
         this.calendarId = calendar_id;
 
         HttpTransport transport = AndroidHttp.newCompatibleTransport();

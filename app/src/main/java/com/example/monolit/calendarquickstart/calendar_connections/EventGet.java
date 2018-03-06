@@ -23,12 +23,10 @@ public class EventGet extends AsyncTask<Void, Void, Event> {
     String calendarId;
 
     private String eventId;
-    private GoogleAccountCredential credential;
 
     public EventGet (GoogleAccountCredential credential, String calendar_id, String eventId, MeuCalendario.OnGetEvent listener) {
         this.listener = listener;
         this.eventId = eventId;
-        this.credential = credential;
         this.calendarId = calendar_id;
 
         HttpTransport transport = AndroidHttp.newCompatibleTransport();

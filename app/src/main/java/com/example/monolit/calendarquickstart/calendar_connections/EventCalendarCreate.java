@@ -20,13 +20,11 @@ public class EventCalendarCreate extends AsyncTask<Void, Void, String> {
     private com.google.api.services.calendar.Calendar mService = null;
     private Exception mLastError = null;
     com.google.api.services.calendar.model.Calendar calendar;
-    GoogleAccountCredential credential;
     OnCalendarCreated listener;
 
     public EventCalendarCreate(GoogleAccountCredential credential, com.google.api.services.calendar.model.Calendar calendar, OnCalendarCreated listener) {
         this.calendar = calendar;
         this.listener = listener;
-        this.credential = credential;
         HttpTransport transport = AndroidHttp.newCompatibleTransport();
         JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
 
