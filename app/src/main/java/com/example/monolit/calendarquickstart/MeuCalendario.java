@@ -12,6 +12,7 @@ import android.content.Context;
 
 import com.example.monolit.calendarquickstart.calendar_connections.EventCalendarCreate;
 import com.example.monolit.calendarquickstart.calendar_connections.EventCreate;
+import com.example.monolit.calendarquickstart.calendar_connections.EventDelete;
 import com.example.monolit.calendarquickstart.calendar_connections.EventGet;
 import com.example.monolit.calendarquickstart.calendar_connections.EventUpdate;
 import com.google.android.gms.common.ConnectionResult;
@@ -68,10 +69,10 @@ public class MeuCalendario {
         }
     }
 
-    void updateEvent(Event eventUpdated, String eventId , String calendarId , final MeuCalendario.OnEventUpdated listener){
+    void updateEvent(Event eventUpdated, String calendarId , final MeuCalendario.OnEventUpdated listener){
         if(canGetResultsFromApi()){
             
-            new EventUpdate(mCredential, calendarId, eventId, eventUpdated, new OnEventUpdated() {
+            new EventUpdate(mCredential, calendarId, eventUpdated, new OnEventUpdated() {
                 @Override
                 public void onUpdated(Event event) {
                     listener.onUpdated(event);
@@ -79,6 +80,13 @@ public class MeuCalendario {
             }).execute();
         }
     }
+
+    void deleteEvent(String eventId, String calendarId, final MeuCalendario.OnEventDeleted listener){
+        if (canGetResultsFromApi()){
+            new EventDelete(mCredential, calendarId, eventId, listener);
+        }
+    }
+
 
     void createCalendar(Calendar calendar, MeuCalendario.OnCalendarCreated listener){
         if(canGetResultsFromApi()){
@@ -141,6 +149,7 @@ public class MeuCalendario {
     public void saveEvent(Event event){
         eventList.add(event);
     }
+
     public void removeEvent(Event event){
         eventList.remove(event);
     }
@@ -162,10 +171,13 @@ public class MeuCalendario {
     public interface OnEventCreated{
         void onCreated(Event event );
     }
+    public interface OnEventDeleted{
+        void onDeleted(Void executou);
+    }
     public interface OnGetEvent{
         void onGet(Event event);
     }
     public interface OnCalendarCreated{
-        void onCreated(String calendarId);
+        void onCalendarCreated(String calendarId);
     }
 }

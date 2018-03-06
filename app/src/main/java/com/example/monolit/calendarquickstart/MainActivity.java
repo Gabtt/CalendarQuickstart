@@ -40,8 +40,7 @@ import java.util.List;
 
 import pub.devrel.easypermissions.EasyPermissions;
 
-public class MainActivity extends Activity
-        implements EasyPermissions.PermissionCallbacks {
+public class MainActivity extends Activity implements EasyPermissions.PermissionCallbacks {
     GoogleAccountCredential mCredential;
     private TextView mOutputText;
     private Button mCallApiButton;
@@ -76,7 +75,6 @@ public class MainActivity extends Activity
 
 
     void createCredential() {
-        // TODO: 22/02/18 criar escope e deletar se gor trocar pra outro.
         String[] scope = SCOPES;
         mCredential = GoogleAccountCredential.usingOAuth2(getApplicationContext(), Arrays.asList(scope)).setBackOff(new ExponentialBackOff());
     }
@@ -141,14 +139,6 @@ public class MainActivity extends Activity
                         event.setSummary("ETA NOVINHA TU TA REBOLANDO BEM");
                         event.setDescription("Ai MEU PIRUUUUU");
 
-                        meuCalendario.updateEvent(event, event.getId(), "primary", new MeuCalendario.OnEventUpdated() {
-                            @Override
-                            public void onUpdated(Event event) {
-                                Toast.makeText(MainActivity.this, "DEUBOM" + event.getId(), Toast.LENGTH_LONG).show();
-
-                            }
-                        });
-
 
                     }
                 });
@@ -165,7 +155,7 @@ public class MainActivity extends Activity
 
                 meuCalendario.createCalendar(calendar, new MeuCalendario.OnCalendarCreated() {
                     @Override
-                    public void onCreated(String calendarId) {
+                    public void onCalendarCreated(String calendarId) {
                         Toast.makeText(MainActivity.this, calendarId, Toast.LENGTH_LONG).show();
                     }
                 });

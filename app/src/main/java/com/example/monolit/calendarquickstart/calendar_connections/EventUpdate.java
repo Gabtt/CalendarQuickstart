@@ -29,11 +29,11 @@ public class EventUpdate extends AsyncTask<Void, Void, Event> {
     private Event event;
     private GoogleAccountCredential credential;
 
-    public EventUpdate(GoogleAccountCredential credential, String calendar_id, String eventId, Event event, OnEventUpdated listener) {
+    public EventUpdate(GoogleAccountCredential credential, String calendar_id, Event event, OnEventUpdated listener) {
         this.listener = listener;
-        this.event = event;
-        this.eventId = eventId;
         this.credential = credential;
+        this.event = event;
+        this.eventId = event.getId();
         this.calendarId = calendar_id;
 
         HttpTransport transport = AndroidHttp.newCompatibleTransport();

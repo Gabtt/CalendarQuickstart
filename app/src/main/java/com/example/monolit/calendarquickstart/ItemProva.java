@@ -5,7 +5,7 @@ package com.example.monolit.calendarquickstart;
  */
 
 
-class Item{
+class ItemProva {
     public int Id;
     public int Avaliacao_ID;
     public String Nome;

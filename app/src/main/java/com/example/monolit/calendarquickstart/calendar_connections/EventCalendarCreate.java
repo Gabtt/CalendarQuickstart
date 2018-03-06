@@ -59,7 +59,7 @@ public class EventCalendarCreate extends AsyncTask<Void, Void, String> {
 
     @Override
     protected void onPostExecute(String output) {
-        listener.onCreated(output);
+        listener.onCalendarCreated(output);
     }
 
     @Override
