@@ -1,40 +1,46 @@
 package com.example.monolit.calendarquickstart.calendar;
 
+import android.app.Activity;
+
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.EventDateTime;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by gabriel_batistell on 23/02/18.
  */
 
 public class CalendarioDeProvas {
-    String calendarioId = "primary";
+
+
+    private static List<Event> eventList = new ArrayList<>();
+    private static List<ItemProva> itemProvaList = new ArrayList<>();
 
 
 
-
-
-    public void adicionaProva(ItemProva itemProva, MeuCalendario meuCalendario, MeuCalendario.OnEventCreated listener){
-        meuCalendario.createEvent(converteProvaEmEvento(itemProva), getCalendarioId() , listener);
-
-    }
-
-    public void removeProva(ItemProva itemProva, MeuCalendario meuCalendario){
-        meuCalendario.deleteEvent(getEventIdNaTabelaDeIds(itemProva), getCalendarioId(), new MeuCalendario.OnEventDeleted() {
-            @Override
-            public void onDeleted(Void executou) {
-
-            }
-        });
+    static void adicionaProva(ItemProva itemProva, Activity activity, MeuCalendario.OnEventCreated listener){
+        MeuCalendario.createEvent(converteProvaEmEvento(itemProva), getCalendarioId(), activity, listener);
 
     }
 
-    public void atualizaProva(ItemProva itemProva, MeuCalendario meuCalendario, MeuCalendario.OnEventUpdated onEventUpdated){
-        meuCalendario.updateEvent(converteProvaEmEvento(itemProva), getCalendarioId(), onEventUpdated);
-    }
+   //public void removeProva(ItemProva itemProva, MeuCalendario meuCalendario){
+   //    meuCalendario.deleteEvent(getEventIdNaTabelaDeIds(itemProva), getCalendarioId(), new MeuCalendario.OnEventDeleted() {
+   //        @Override
+   //        public void onDeleted(Void executou) {
 
-    public Event converteProvaEmEvento(ItemProva itemProva){
+   //        }
+   //    });
+
+   //}
+
+   //public void atualizaProva(ItemProva itemProva, MeuCalendario meuCalendario, MeuCalendario.OnEventUpdated onEventUpdated){
+   //    meuCalendario.updateEvent(converteProvaEmEvento(itemProva), getCalendarioId(), onEventUpdated);
+   //}
+
+    static Event converteProvaEmEvento(ItemProva itemProva){
 
         final Event event = new Event()
                 .setSummary(itemProva.Nome)
@@ -55,12 +61,29 @@ public class CalendarioDeProvas {
         return event;
     }
 
-    String getEventIdNaTabelaDeIds(ItemProva itemProva){
+    public void adicionaProvasJaAceitasNoCalendario(Activity activity){
+        getListaDeProvas();
+        for (ItemProva itemProva : itemProvaList) {
+            adicionaProva(itemProva, activity, new MeuCalendario.OnEventCreated() {
+                @Override
+                public void onCreated(Event event) {
+
+                }
+            });
+        }
+
+    }
+
+    public void getListaDeProvas(){
+        // itemProvaList = AvaliaçoesHelper.getAvaliacoesFuturasOuPossivelmenteFuturas(tipo)
+    }
+
+    static String getEventIdNaTabelaDeIds(ItemProva itemProva){
         // TODO: 06/03/2018 Pegar o id da prova relacionado ao id do evento.
         return "id";
     }
-    public String getCalendarioId() {
-        return calendarioId;
+    static String getCalendarioId() {
+        return "primary";
     }
 
     public void salvaCredenciais(){}

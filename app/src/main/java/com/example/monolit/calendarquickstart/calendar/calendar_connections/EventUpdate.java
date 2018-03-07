@@ -69,7 +69,6 @@ public class EventUpdate extends AsyncTask<Void, Void, Event> {
     @Override
     protected void onPostExecute(Event output) {
         listener.onUpdated(output);
-        MeuCalendario.updateEvent(eventToUpdate, output);
 
     }
 
