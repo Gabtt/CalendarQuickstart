@@ -2,7 +2,7 @@ package com.example.monolit.calendarquickstart.calendar.calendar_connections;
 
 import android.os.AsyncTask;
 
-import com.example.monolit.calendarquickstart.calendar.MeuCalendario.OnCalendarCreated;
+import com.example.monolit.calendarquickstart.calendar.CalendarApi.OnCalendarCreated;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.http.HttpTransport;

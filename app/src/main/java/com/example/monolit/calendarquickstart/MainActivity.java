@@ -1,6 +1,6 @@
 package com.example.monolit.calendarquickstart;
 
-import com.example.monolit.calendarquickstart.calendar.MeuCalendario;
+import com.example.monolit.calendarquickstart.calendar.CalendarApi;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 
 import com.google.api.client.util.DateTime;
@@ -20,9 +20,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,7 +35,7 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
     private TextView tvEventDescription;
     private Button btCallApiNewEvent;
     ProgressDialog mProgress;
-    MeuCalendario meuCalendario;
+    CalendarApi calendarApi;
 
     static final int REQUEST_ACCOUNT_PICKER = 1000;
     static final int REQUEST_AUTHORIZATION = 1001;
@@ -85,7 +83,7 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
                 event.setEnd(end);
 
                 Log.d(TAG, "onClick: criou o objeto evento com as infos da tela");
-                MeuCalendario.createEvent(event, "primary", MainActivity.this, new MeuCalendario.OnEventCreated() {
+                CalendarApi.createEvent(event, "primary", MainActivity.this, new CalendarApi.OnEventCreated() {
                     @Override
                     public void onCreated(Event event) {
 

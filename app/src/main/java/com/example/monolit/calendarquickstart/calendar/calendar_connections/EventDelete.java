@@ -2,7 +2,7 @@ package com.example.monolit.calendarquickstart.calendar.calendar_connections;
 
 import android.os.AsyncTask;
 
-import com.example.monolit.calendarquickstart.calendar.MeuCalendario;
+import com.example.monolit.calendarquickstart.calendar.CalendarApi;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.http.HttpTransport;
@@ -18,12 +18,12 @@ import java.io.IOException;
 public class EventDelete  extends AsyncTask<Void, Void, Void> {
     private com.google.api.services.calendar.Calendar mService = null;
     private Exception mLastError = null;
-    private MeuCalendario.OnEventDeleted listener;
+    private CalendarApi.OnEventDeleted listener;
     String calendarId;
 
     private String eventId;
 
-    public EventDelete(GoogleAccountCredential credential,String calendar_id,String eventId, MeuCalendario.OnEventDeleted listener) {
+    public EventDelete(GoogleAccountCredential credential,String calendar_id,String eventId, CalendarApi.OnEventDeleted listener) {
         this.listener = listener;
         this.eventId = eventId;
         this.calendarId = calendar_id;

@@ -21,13 +21,13 @@ public class CalendarioDeProvas {
 
 
 
-    static void adicionaProva(ItemProva itemProva, Activity activity, MeuCalendario.OnEventCreated listener){
-        MeuCalendario.createEvent(converteProvaEmEvento(itemProva), getCalendarioId(), activity, listener);
+    static void adicionaProva(ItemProva itemProva, Activity activity, CalendarApi.OnEventCreated listener){
+        CalendarApi.createEvent(converteProvaEmEvento(itemProva), getCalendarioId(), activity, listener);
 
     }
 
-   //public void removeProva(ItemProva itemProva, MeuCalendario meuCalendario){
-   //    meuCalendario.deleteEvent(getEventIdNaTabelaDeIds(itemProva), getCalendarioId(), new MeuCalendario.OnEventDeleted() {
+   //public void removeProva(ItemProva itemProva, CalendarApi meuCalendario){
+   //    meuCalendario.deleteEvent(getEventIdNaTabelaDeIds(itemProva), getCalendarioId(), new CalendarApi.OnEventDeleted() {
    //        @Override
    //        public void onDeleted(Void executou) {
 
@@ -36,7 +36,7 @@ public class CalendarioDeProvas {
 
    //}
 
-   //public void atualizaProva(ItemProva itemProva, MeuCalendario meuCalendario, MeuCalendario.OnEventUpdated onEventUpdated){
+   //public void atualizaProva(ItemProva itemProva, CalendarApi meuCalendario, CalendarApi.OnEventUpdated onEventUpdated){
    //    meuCalendario.updateEvent(converteProvaEmEvento(itemProva), getCalendarioId(), onEventUpdated);
    //}
 
@@ -64,7 +64,7 @@ public class CalendarioDeProvas {
     public void adicionaProvasJaAceitasNoCalendario(Activity activity){
         getListaDeProvas();
         for (ItemProva itemProva : itemProvaList) {
-            adicionaProva(itemProva, activity, new MeuCalendario.OnEventCreated() {
+            adicionaProva(itemProva, activity, new CalendarApi.OnEventCreated() {
                 @Override
                 public void onCreated(Event event) {
 

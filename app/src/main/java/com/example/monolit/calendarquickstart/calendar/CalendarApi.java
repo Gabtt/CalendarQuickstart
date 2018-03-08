@@ -24,14 +24,12 @@ import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.Calendar;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
-public class MeuCalendario {
+public class CalendarApi {
     Activity context;
 
     private static final String TAG = "CreateEventDebug";
@@ -44,7 +42,7 @@ public class MeuCalendario {
     static final int REQUEST_PERMISSION_GET_ACCOUNTS = 1003;
     static final int REQUEST_ACCOUNT_PICKER = 1000;
 
-    public MeuCalendario(Activity context, GoogleAccountCredential credential) {
+    public CalendarApi(Activity context, GoogleAccountCredential credential) {
         this.mCredential = credential;
         this.context = context;
     }
@@ -60,7 +58,7 @@ public class MeuCalendario {
         }
     }
 
-    static public void createEvent(Event event, String calendarId, Activity activity,final MeuCalendario.OnEventCreated listener){
+    static public void createEvent(Event event, String calendarId, Activity activity,final CalendarApi.OnEventCreated listener){
         if(canGetResultsFromApi(activity)){
 
             Log.d(TAG, "createEvent: entrooou, pode pegar resultados da api, agora vai criar objeto EventCreate");
@@ -74,7 +72,7 @@ public class MeuCalendario {
         }
     }
 
-    static void updateEvent(Event eventUpdated,Activity activity ,String calendarId , final MeuCalendario.OnEventUpdated listener){
+    static void updateEvent(Event eventUpdated,Activity activity ,String calendarId , final CalendarApi.OnEventUpdated listener){
         if(canGetResultsFromApi(activity)){
 
             final String[] SCOPES = {CalendarScopes.CALENDAR};
@@ -90,14 +88,14 @@ public class MeuCalendario {
         }
     }
 
-    public void deleteEvent(String eventId,Activity activity, String calendarId, final MeuCalendario.OnEventDeleted listener){
+    public void deleteEvent(String eventId,Activity activity, String calendarId, final CalendarApi.OnEventDeleted listener){
         if (canGetResultsFromApi(activity)){
             new EventDelete(mCredential, calendarId, eventId, listener);
         }
     }
 
 
-    public void createCalendar(Calendar calendar,Activity activity, MeuCalendario.OnCalendarCreated listener){
+    public void createCalendar(Calendar calendar,Activity activity, CalendarApi.OnCalendarCreated listener){
         if(canGetResultsFromApi(activity)){
             new EventCalendarCreate(mCredential, calendar, listener).execute();
         }

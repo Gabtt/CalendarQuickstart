@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.monolit.calendarquickstart.calendar.MeuCalendario.OnEventCreated;
+import com.example.monolit.calendarquickstart.calendar.CalendarApi.OnEventCreated;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.http.HttpTransport;
