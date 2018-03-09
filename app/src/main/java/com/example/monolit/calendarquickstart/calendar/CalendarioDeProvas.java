@@ -2,7 +2,6 @@ package com.example.monolit.calendarquickstart.calendar;
 
 import android.app.Activity;
 
-import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.EventDateTime;
@@ -19,16 +18,21 @@ public class CalendarioDeProvas {
 
     private static List<Event> eventList = new ArrayList<>();
     private static List<ItemProva> itemProvaList = new ArrayList<>();
+    CalendarApi meuCalendario;
 
 
+    public CalendarioDeProvas(CalendarApi calendario){
+        this.meuCalendario = calendario;
+    }
 
-    static void adicionaProva(GoogleAccountCredential credential, ItemProva itemProva, Activity activity, CalendarApi.OnEventCreated listener){
-        CalendarApi.createEvent(credential, converteProvaEmEvento(itemProva), getCalendarioId(), activity, listener);
+
+    public void adicionaProva(ItemProva itemProva, CalendarApi.OnEventCreated listener){
+        meuCalendario.createEvent(converteProvaEmEvento(itemProva), getCalendarioId(), listener);
 
     }
 
-   public void removeProva(GoogleAccountCredential credential, ItemProva itemProva, CalendarApi meuCalendario){
-       meuCalendario.deleteEvent(credential, getEventIdNaTabelaDeIds(itemProva), getCalendarioId(), new CalendarApi.OnEventDeleted() {
+   public void removeProva(ItemProva itemProva){
+       meuCalendario.deleteEvent(getEventIdNaTabelaDeIds(itemProva),  getCalendarioId(), new CalendarApi.OnEventDeleted() {
            @Override
            public void onDeleted(Void executou) {
 
@@ -37,11 +41,11 @@ public class CalendarioDeProvas {
 
    }
 
-   public void atualizaProva(ItemProva itemProva, CalendarApi meuCalendario, CalendarApi.OnEventUpdated onEventUpdated){
+   public void atualizaProva(ItemProva itemProva, CalendarApi.OnEventUpdated onEventUpdated){
        meuCalendario.updateEvent(converteProvaEmEvento(itemProva), getCalendarioId(), onEventUpdated);
    }
 
-    static Event converteProvaEmEvento(ItemProva itemProva){
+   Event converteProvaEmEvento(ItemProva itemProva){
 
         final Event event = new Event()
                 .setSummary(itemProva.Nome)
@@ -55,17 +59,17 @@ public class CalendarioDeProvas {
 
         //Adicionando uma hora depois.
         // TODO: 06/03/2018 hora final do evento
-        DateTime endDateTime = new DateTime(itemProva.UnixMilli+3600000 );
+        DateTime endDateTime = new DateTime(itemProva.UnixMilli+360000 );
         event.setEnd(new EventDateTime().setDateTime(endDateTime));
 
 
         return event;
     }
 
-    public void adicionaProvasJaAceitasNoCalendario(Activity activity){
+    public void adicionaProvasJaAceitasNoCalendario(){
         getListaDeProvas();
         for (ItemProva itemProva : itemProvaList) {
-            adicionaProva(itemProva, activity, new CalendarApi.OnEventCreated() {
+            adicionaProva(itemProva, new CalendarApi.OnEventCreated() {
                 @Override
                 public void onCreated(Event event) {
 
@@ -79,13 +83,14 @@ public class CalendarioDeProvas {
         // itemProvaList = AvaliaçoesHelper.getAvaliacoesFuturasOuPossivelmenteFuturas(tipo)
     }
 
-    static String getEventIdNaTabelaDeIds(ItemProva itemProva){
+    public String getEventIdNaTabelaDeIds(ItemProva itemProva){
         // TODO: 06/03/2018 Pegar o id da prova relacionado ao id do evento.
         return "id";
     }
-    static String getCalendarioId() {
+    public String getCalendarioId() {
         return "primary";
     }
 
-    public void salvaCredenciais(){}
+
+
 }

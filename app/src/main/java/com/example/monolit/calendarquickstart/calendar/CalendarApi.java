@@ -18,7 +18,7 @@ import com.example.monolit.calendarquickstart.calendar.calendar_connections.Even
 import com.example.monolit.calendarquickstart.calendar.calendar_connections.EventUpdate;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential ;
 import com.google.api.client.util.ExponentialBackOff;
 import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.calendar.model.Event;
@@ -30,39 +30,39 @@ import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
 public class CalendarApi {
-    Activity context;
+    Activity activity;
 
-    private static final String TAG = "CreateEventDebug";
+    private   final String TAG = "CreateEventDebug";
 
     GoogleAccountCredential mCredential;
-    private static final String APPLICATION_NAME = "Google Calendar API Java Quickstart";
-    private static final String PREF_ACCOUNT_NAME = "accountName";
+    private   final String APPLICATION_NAME = "Google Calendar API Java Quickstart";
+    private   final String PREF_ACCOUNT_NAME = "accountName";
 
-    static final int REQUEST_GOOGLE_PLAY_SERVICES = 1002;
-    static final int REQUEST_PERMISSION_GET_ACCOUNTS = 1003;
-    static final int REQUEST_ACCOUNT_PICKER = 1000;
+      final int REQUEST_GOOGLE_PLAY_SERVICES = 1002;
+      final int REQUEST_PERMISSION_GET_ACCOUNTS = 1003;
+      final int REQUEST_ACCOUNT_PICKER = 1000;
 
-    public CalendarApi(Activity context, GoogleAccountCredential credential) {
+    public CalendarApi(Activity activity,GoogleAccountCredential credential) {
         this.mCredential = credential;
-        this.context = context;
+        this.activity = activity;
     }
 
-    static void acquireGooglePlayServices(Context context) {
+      void acquireGooglePlayServices() {
         Log.d(TAG, "acquireGooglePlayServices: adquire google play service");
         GoogleApiAvailability apiAvailability =
                 GoogleApiAvailability.getInstance();
         final int connectionStatusCode =
-                apiAvailability.isGooglePlayServicesAvailable(context);
+                apiAvailability.isGooglePlayServicesAvailable(activity);
         if (apiAvailability.isUserResolvableError(connectionStatusCode)) {
-            showGooglePlayServicesAvailabilityErrorDialog(context, connectionStatusCode);
+            showGooglePlayServicesAvailabilityErrorDialog(activity, connectionStatusCode);
         }
     }
 
-    static public void createEvent(GoogleAccountCredential credential,Event event, String calendarId, Activity activity,final CalendarApi.OnEventCreated listener){
-        if(canGetResultsFromApi(activity)){
+      public void createEvent(Event event, String calendarId,final CalendarApi.OnEventCreated listener){
+        if(canGetResultsFromApi()){
 
             Log.d(TAG, "createEvent: entrooou, pode pegar resultados da api, agora vai criar objeto EventCreate");
-            new EventCreate(credential , calendarId, event, activity ,  new OnEventCreated() {
+            new EventCreate( mCredential, calendarId, event, activity ,  new OnEventCreated() {
                 @Override
                 public void onCreated(Event event) {
                     listener.onCreated(event);
@@ -72,14 +72,10 @@ public class CalendarApi {
         }
     }
 
-    static void updateEvent(Event eventUpdated,Activity activity ,String calendarId , final CalendarApi.OnEventUpdated listener){
-        if(canGetResultsFromApi(activity)){
-
-            final String[] SCOPES = {CalendarScopes.CALENDAR};
-            GoogleAccountCredential credential = GoogleAccountCredential.usingOAuth2(activity.getApplicationContext(), Arrays.asList(SCOPES)).setBackOff(new ExponentialBackOff());
-
+      void updateEvent(Event eventUpdated,String calendarId , final CalendarApi.OnEventUpdated listener){
+        if(canGetResultsFromApi()){
 // TODO: 07/03/2018 REMOVER SAPODA DAQUI E ADICIONAR NO OBJETO EVENTUPDATE 
-            new EventUpdate(credential, calendarId, eventUpdated, new OnEventUpdated() {
+            new EventUpdate(mCredential, calendarId, eventUpdated, new OnEventUpdated() {
                 @Override
                 public void onUpdated(Event event) {
                     listener.onUpdated(event);
@@ -88,41 +84,38 @@ public class CalendarApi {
         }
     }
 
-    public void deleteEvent(GoogleAccountCredential credential, String eventId,Activity activity, String calendarId, final CalendarApi.OnEventDeleted listener){
-        if (canGetResultsFromApi(activity)){
+    public void deleteEvent(String eventId, String calendarId, final CalendarApi.OnEventDeleted listener){
+        if (canGetResultsFromApi()){
             new EventDelete(mCredential, calendarId, eventId, listener);
         }
     }
 
 
-    public void createCalendar(Calendar calendar,Activity activity, CalendarApi.OnCalendarCreated listener){
-        if(canGetResultsFromApi(activity)){
+    public void createCalendar(Calendar calendar, CalendarApi.OnCalendarCreated listener){
+        if(canGetResultsFromApi()){
             new EventCalendarCreate(mCredential, calendar, listener).execute();
         }
     }
 
-    static boolean isGooglePlayServicesAvailable(Context context) {
+      boolean isGooglePlayServicesAvailable() {
         Log.d(TAG, "isGooglePlayServicesAvailable: ve se o googlePlayService esta disponivel");
         GoogleApiAvailability apiAvailability =
                 GoogleApiAvailability.getInstance();
         final int connectionStatusCode =
-                apiAvailability.isGooglePlayServicesAvailable(context);
+                apiAvailability.isGooglePlayServicesAvailable(activity);
         return connectionStatusCode == ConnectionResult.SUCCESS;
     }
-    static boolean canGetResultsFromApi(Activity activity) {
+    private boolean canGetResultsFromApi( ) {
         Log.d(TAG, "canGetResultsFromApi: ve se pode pegar resultados da api");
-        final String[] SCOPES = {CalendarScopes.CALENDAR};
-        GoogleAccountCredential credential = GoogleAccountCredential.usingOAuth2(activity.getApplicationContext(), Arrays.asList(SCOPES)).setBackOff(new ExponentialBackOff());
-
         Log.d(TAG, "canGetResultsFromApi: criou credencial dnv");
 
-        if (!isGooglePlayServicesAvailable(activity)) {
+        if (!isGooglePlayServicesAvailable()) {
             Log.d(TAG, "canGetResultsFromApi: Google Play service não esta disponivel");
-            acquireGooglePlayServices(activity);
+            acquireGooglePlayServices();
             return false;
-        } else if (credential.getSelectedAccountName() == null) {
+        } else if (mCredential.getSelectedAccountName() == null) {
             Log.d(TAG, "canGetResultsFromApi: GPlayS esta disponivel, mas accountName não esta salva");
-            chooseAccount(activity, credential);
+            chooseAccount();
             return false;
         } else {
             Log.d(TAG, "canGetResultsFromApi: pode pegar resultados da api, deu true");
@@ -130,7 +123,7 @@ public class CalendarApi {
         }
     }
 
-    static void showGooglePlayServicesAvailabilityErrorDialog(Context context,final int connectionStatusCode) {
+    private void showGooglePlayServicesAvailabilityErrorDialog(Context context,final int connectionStatusCode) {
         GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
         Dialog dialog = apiAvailability.getErrorDialog(
                 ((MainActivity) context),
@@ -140,17 +133,17 @@ public class CalendarApi {
     }
 
     @AfterPermissionGranted(REQUEST_PERMISSION_GET_ACCOUNTS)
-    static void chooseAccount(Activity activity, GoogleAccountCredential credential) {
+      void chooseAccount() {
         if (EasyPermissions.hasPermissions(activity, Manifest.permission.GET_ACCOUNTS)) {
 
             String accountName = ((Activity) activity).getPreferences(Context.MODE_PRIVATE)
                     .getString(PREF_ACCOUNT_NAME, null);
             if (accountName != null) {
-                credential.setSelectedAccountName(accountName);
+                mCredential.setSelectedAccountName(accountName);
             } else {
                 // Start a dialog from which the user can choose an account
                 activity.startActivityForResult(
-                        credential.newChooseAccountIntent(),
+                        mCredential.newChooseAccountIntent(),
                         REQUEST_ACCOUNT_PICKER);
             }
         } else {
@@ -165,7 +158,7 @@ public class CalendarApi {
 
 
 
-    public static interface OnEventUpdated{
+    public   interface OnEventUpdated{
         void onUpdated(Event event);
     }
     public interface OnEventCreated{
