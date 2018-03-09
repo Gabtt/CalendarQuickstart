@@ -2,6 +2,7 @@ package com.example.monolit.calendarquickstart.calendar;
 
 import android.app.Activity;
 
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.EventDateTime;
@@ -21,24 +22,24 @@ public class CalendarioDeProvas {
 
 
 
-    static void adicionaProva(ItemProva itemProva, Activity activity, CalendarApi.OnEventCreated listener){
-        CalendarApi.createEvent(converteProvaEmEvento(itemProva), getCalendarioId(), activity, listener);
+    static void adicionaProva(GoogleAccountCredential credential, ItemProva itemProva, Activity activity, CalendarApi.OnEventCreated listener){
+        CalendarApi.createEvent(credential, converteProvaEmEvento(itemProva), getCalendarioId(), activity, listener);
 
     }
 
-   //public void removeProva(ItemProva itemProva, CalendarApi meuCalendario){
-   //    meuCalendario.deleteEvent(getEventIdNaTabelaDeIds(itemProva), getCalendarioId(), new CalendarApi.OnEventDeleted() {
-   //        @Override
-   //        public void onDeleted(Void executou) {
+   public void removeProva(GoogleAccountCredential credential, ItemProva itemProva, CalendarApi meuCalendario){
+       meuCalendario.deleteEvent(credential, getEventIdNaTabelaDeIds(itemProva), getCalendarioId(), new CalendarApi.OnEventDeleted() {
+           @Override
+           public void onDeleted(Void executou) {
 
-   //        }
-   //    });
+           }
+       });
 
-   //}
+   }
 
-   //public void atualizaProva(ItemProva itemProva, CalendarApi meuCalendario, CalendarApi.OnEventUpdated onEventUpdated){
-   //    meuCalendario.updateEvent(converteProvaEmEvento(itemProva), getCalendarioId(), onEventUpdated);
-   //}
+   public void atualizaProva(ItemProva itemProva, CalendarApi meuCalendario, CalendarApi.OnEventUpdated onEventUpdated){
+       meuCalendario.updateEvent(converteProvaEmEvento(itemProva), getCalendarioId(), onEventUpdated);
+   }
 
     static Event converteProvaEmEvento(ItemProva itemProva){
 

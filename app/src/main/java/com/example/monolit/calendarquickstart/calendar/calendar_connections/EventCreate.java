@@ -32,12 +32,8 @@ public class EventCreate extends AsyncTask<Void, Void, Event> {
 
     private Event event;
 
-    public EventCreate(String calendar_id, Event event, Context context, OnEventCreated listener) {
+    public EventCreate(GoogleAccountCredential credential, String calendar_id, Event event, Context context, OnEventCreated listener) {
         Log.d(TAG, "EventCreate: construindo o EventCreate");
-        final String[] SCOPES = {CalendarScopes.CALENDAR};
-        GoogleAccountCredential credential = GoogleAccountCredential.usingOAuth2(context.getApplicationContext(), Arrays.asList(SCOPES)).setBackOff(new ExponentialBackOff());
-
-        Log.d(TAG, "EventCreate: pediu credencial dnv");
 
         this.listener = listener;
         this.event = event;

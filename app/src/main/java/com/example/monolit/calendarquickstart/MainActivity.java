@@ -36,6 +36,7 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
     private Button btCallApiNewEvent;
     ProgressDialog mProgress;
     CalendarApi calendarApi;
+    GoogleAccountCredential mCredential;
 
     static final int REQUEST_ACCOUNT_PICKER = 1000;
     static final int REQUEST_AUTHORIZATION = 1001;
@@ -55,6 +56,11 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
     }
 
 
+    public void createCredential(){
+
+        final String[] SCOPES = {CalendarScopes.CALENDAR};
+        mCredential = GoogleAccountCredential.usingOAuth2(getApplicationContext(), Arrays.asList(SCOPES)).setBackOff(new ExponentialBackOff());
+    }
 
     public void initViews() {
         tvEventName = findViewById(R.id.event_name);
@@ -83,7 +89,7 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
                 event.setEnd(end);
 
                 Log.d(TAG, "onClick: criou o objeto evento com as infos da tela");
-                CalendarApi.createEvent(event, "primary", MainActivity.this, new CalendarApi.OnEventCreated() {
+                CalendarApi.createEvent(mCredential,event, "primary", MainActivity.this, new CalendarApi.OnEventCreated() {
                     @Override
                     public void onCreated(Event event) {
 
@@ -122,10 +128,7 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
         // Do nothing.
     }
 
-    @Override
-    protected void onActivityResult(
-            int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    public void trataResultPraCredential(int requestCode, int resultCode, Intent data){
         switch (requestCode) {
             case REQUEST_GOOGLE_PLAY_SERVICES:
                 if (resultCode != RESULT_OK) {
@@ -134,7 +137,7 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
                 }
                 break;
             case REQUEST_ACCOUNT_PICKER:
-                // TODO: 07/03/2018 conferir se esta salvando a poha do account name 
+                // TODO: 07/03/2018 conferir se esta salvando a poha do account name
                 if (resultCode == RESULT_OK && data != null &&
                         data.getExtras() != null) {
                     String accountName =
@@ -145,10 +148,6 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
                         SharedPreferences.Editor editor = settings.edit();
                         editor.putString(PREF_ACCOUNT_NAME, accountName);
                         editor.apply();
-
-                        final String[] SCOPES = {CalendarScopes.CALENDAR};
-                        GoogleAccountCredential mCredential = GoogleAccountCredential.usingOAuth2(getApplicationContext(), Arrays.asList(SCOPES)).setBackOff(new ExponentialBackOff());
-
                         mCredential.setSelectedAccountName(accountName);
                     }
                 }
@@ -158,6 +157,13 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
                 }
                 break;
         }
+    }
+
+    @Override
+    protected void onActivityResult(
+            int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        trataResultPraCredential(requestCode, resultCode, data);
     }
 
 }

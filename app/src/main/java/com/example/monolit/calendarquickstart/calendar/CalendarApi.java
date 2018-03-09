@@ -58,11 +58,11 @@ public class CalendarApi {
         }
     }
 
-    static public void createEvent(Event event, String calendarId, Activity activity,final CalendarApi.OnEventCreated listener){
+    static public void createEvent(GoogleAccountCredential credential,Event event, String calendarId, Activity activity,final CalendarApi.OnEventCreated listener){
         if(canGetResultsFromApi(activity)){
 
             Log.d(TAG, "createEvent: entrooou, pode pegar resultados da api, agora vai criar objeto EventCreate");
-            new EventCreate( calendarId, event, activity ,  new OnEventCreated() {
+            new EventCreate(credential , calendarId, event, activity ,  new OnEventCreated() {
                 @Override
                 public void onCreated(Event event) {
                     listener.onCreated(event);
@@ -88,7 +88,7 @@ public class CalendarApi {
         }
     }
 
-    public void deleteEvent(String eventId,Activity activity, String calendarId, final CalendarApi.OnEventDeleted listener){
+    public void deleteEvent(GoogleAccountCredential credential, String eventId,Activity activity, String calendarId, final CalendarApi.OnEventDeleted listener){
         if (canGetResultsFromApi(activity)){
             new EventDelete(mCredential, calendarId, eventId, listener);
         }
