@@ -30,6 +30,10 @@ public class CalendarioDeProvas {
         meuCalendario.createEvent(converteProvaEmEvento(itemProva), getCalendarioId(), listener);
 
     }
+    public void adicionaProva(Event event, CalendarApi.OnEventCreated listener){
+        meuCalendario.createEvent(event, getCalendarioId(), listener);
+
+    }
 
    public void removeProva(ItemProva itemProva){
        meuCalendario.deleteEvent(getEventIdNaTabelaDeIds(itemProva),  getCalendarioId(), new CalendarApi.OnEventDeleted() {

@@ -92,11 +92,8 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
                 CalendarioDeProvas calendarioDeProvas = new CalendarioDeProvas(new CalendarApi(MainActivity.this,mCredential ));
 
 
-                calendarioDeProvas.adicionaProvasJaAceitasNoCalendario();
 
-                ItemProva itemProva = new ItemProva();
-
-                calendarioDeProvas.adicionaProva(itemProva, new CalendarApi.OnEventCreated() {
+                calendarioDeProvas.adicionaProva(event, new CalendarApi.OnEventCreated() {
                     @Override
                     public void onCreated(Event event) {
 
