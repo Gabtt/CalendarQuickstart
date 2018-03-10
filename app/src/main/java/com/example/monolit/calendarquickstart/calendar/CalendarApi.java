@@ -74,7 +74,7 @@ public class CalendarApi {
 
       void updateEvent(Event eventUpdated,String calendarId , final CalendarApi.OnEventUpdated listener){
         if(canGetResultsFromApi()){
-// TODO: 07/03/2018 REMOVER SAPODA DAQUI E ADICIONAR NO OBJETO EVENTUPDATE 
+// TODO: 07/03/2018 REMOVER SAPODA DAQUI E ADICIONAR NO OBJETO EVENTUPDATE
             new EventUpdate(mCredential, calendarId, eventUpdated, new OnEventUpdated() {
                 @Override
                 public void onUpdated(Event event) {

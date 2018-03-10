@@ -26,15 +26,26 @@ public class CalendarioDeProvas {
     }
 
 
-    public void adicionaProva(ItemProva itemProva, CalendarApi.OnEventCreated listener){
-        meuCalendario.createEvent(converteProvaEmEvento(itemProva), getCalendarioId(), listener);
+    public void adicionaProva(final ItemProva itemProva, final CalendarApi.OnEventCreated listener){
+        meuCalendario.createEvent(converteProvaEmEvento(itemProva), getCalendarioId(),  new CalendarApi.OnEventCreated() {
+            @Override
+            public void onCreated(Event event) {
+                salvaEventIdERelacionaComProvaId(event.getId(),itemProva.Avaliacao_ID);
+                listener.onCreated(event);
 
+            }
+        });
     }
+
+    @Deprecated
     public void adicionaProva(Event event, CalendarApi.OnEventCreated listener){
         meuCalendario.createEvent(event, getCalendarioId(), listener);
 
     }
 
+
+
+    @Deprecated
    public void removeProva(ItemProva itemProva){
        meuCalendario.deleteEvent(getEventIdNaTabelaDeIds(itemProva),  getCalendarioId(), new CalendarApi.OnEventDeleted() {
            @Override
@@ -49,7 +60,7 @@ public class CalendarioDeProvas {
        meuCalendario.updateEvent(converteProvaEmEvento(itemProva), getCalendarioId(), onEventUpdated);
    }
 
-   Event converteProvaEmEvento(ItemProva itemProva){
+   public Event converteProvaEmEvento(ItemProva itemProva){
 
         final Event event = new Event()
                 .setSummary(itemProva.Nome)
@@ -86,6 +97,30 @@ public class CalendarioDeProvas {
     public void getListaDeProvas(){
         // itemProvaList = AvaliaçoesHelper.getAvaliacoesFuturasOuPossivelmenteFuturas(tipo)
     }
+
+    /**
+     *
+     * @param eventId
+     * @param AvaliacaoId Usar Avaliacao.AvaliavaoId
+     */
+    public void salvaEventIdERelacionaComProvaId(String eventId, int AvaliacaoId){
+
+
+
+        // TODO: 10/03/18 salvar id de prova e de evento na tabela relacional de provas e eventos.
+        // TODO: 10/03/18 O id só vai ser salvo depois de ter adiciconado evento no calendar.
+    }
+
+    @Deprecated
+    public void deletaEventIdEProvaIdDaTabela(String eventId, int AvaliacaoId){
+        // TODO: 10/03/18 deleta relação de id de prova com id de evento na tebela pois evento foi REMOVIDO. Creio que nunca vai ser usado, apenas sera feito adição e edição.
+    }
+
+    @Deprecated
+    public void deletaEventIdEProvaIdDaTabelaComBaseNoEventId(String eventId){}
+
+    @Deprecated
+    public void deletaEventIdEProvaIdDaTabelaComBaseNaProvaId(int AvaliacaoId){}
 
     public String getEventIdNaTabelaDeIds(ItemProva itemProva){
         // TODO: 06/03/2018 Pegar o id da prova relacionado ao id do evento.

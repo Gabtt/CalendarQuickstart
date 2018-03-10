@@ -134,18 +134,22 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case REQUEST_GOOGLE_PLAY_SERVICES:
+                Log.d(TAG, "onActivityResult: REQUEST_GOOGLE_PLAY_SERVICES");
                 if (resultCode != RESULT_OK) {
-
+                    Log.d(TAG, "onActivityResult: result não deu ok, n sei pq");
                 } else {
+                    Log.d(TAG, "onActivityResult: deu result ok");
                 }
                 break;
             case REQUEST_ACCOUNT_PICKER:
+                Log.d(TAG, "onActivityResult: REQUEST_ACCOUNT_PICKER");
                 // TODO: 07/03/2018 conferir se esta salvando a poha do account name 
-                if (resultCode == RESULT_OK && data != null &&
-                        data.getExtras() != null) {
-                    String accountName =
-                            data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
+                if (resultCode == RESULT_OK && data != null && data.getExtras() != null) {
+                    Log.d(TAG, "onActivityResult: Result_ok, intent n nula e extras n nulas.");
+                    String accountName = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
+                    Log.d(TAG, "onActivityResult: accountName: " +accountName);
                     if (accountName != null) {
+                        Log.d(TAG, "onActivityResult: account name diferente de null");
                         SharedPreferences settings =
                                 getPreferences(Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = settings.edit();
@@ -158,6 +162,7 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
                 break;
             case REQUEST_AUTHORIZATION:
                 if (resultCode == RESULT_OK) {
+                    
                 }
                 break;
         }
